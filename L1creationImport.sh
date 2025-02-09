@@ -12,6 +12,7 @@ avalanche blockchain import file export-esgi.json --force
 
 echo "[OK] Blockchain 'esgi' créée avec succès."
 
+# Déploiement de la blockchain "esgi"
 avalanche blockchain deploy esgi --local
 
 echo "[OK] Blockchain 'esgi' déployée avec succès."
