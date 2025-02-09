@@ -5,15 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 /**
  * @title ESGICertificates
- * @dev Version plus complète pour OpenZeppelin v5.x (pas de `_exists`, on utilise `_requireOwned(tokenId)`).
- *
- * Caractéristiques :
- *  - Pas de rôles ni restriction : n'importe qui peut créer/mint et update la tokenURI.
- *  - parentOf[tokenId] == 0 => NFT "Programme".
- *  - parentOf[tokenId] != 0 => NFT "Annuel" (référence le programme).
- *  - On stocke également des tableaux global (_programTokens, _annualTokens) et un mapping
- *    _annualChildrenOf[programId] => liste de ses NFTs annuels.
- *  - Dans la v5 d'OpenZeppelin, on utilise `_requireOwned(tokenId)` au lieu de `_exists(tokenId)`.
+ * @dev Version plus complète pour OpenZeppelin v5.x.
  */
 contract ESGICertificates is ERC721URIStorage {
     // Compteur pour générer les IDs
