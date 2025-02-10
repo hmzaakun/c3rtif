@@ -15,7 +15,7 @@ const Navbar = () => {
                     <Link href="#features" className="text-sm font-medium hover:underline underline-offset-4">
                         Explorer
                     </Link>
-                    <Link href="#contact" className="text-sm font-medium hover:underline underline-offset-4">
+                    <Link href="/admin" className="text-sm font-medium hover:underline underline-offset-4">
                         Admin
                     </Link>
                     <ConnectButton />
