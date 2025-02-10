@@ -3,9 +3,9 @@ import { createConfig, http } from 'wagmi'
 
 
 export const ESGI = {
-  id: 43112,
-  name: "ESGI",
-  nativeCurrency: { name: "ESGI", symbol: "ESGI", decimals: 18 },
+  id: 12345,
+  name: "esgi",
+  nativeCurrency: { name: "ESGI Token", symbol: "ESGI", decimals: 18 },
   rpcUrls: {
     default: {
       http: [
@@ -18,7 +18,7 @@ export const ESGI = {
   },
   contracts: {
     ESGICertificates: {
-      address: "0xFcDe4c93666f8F05CE08E937Dae7Bd8aC831d3D8",
+      address: "0x4Ac1d98D9cEF99EC6546dEd4Bd550b0b287aaD6D",
     },
   },
 } as const satisfies Chain;

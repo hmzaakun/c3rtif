@@ -85,12 +85,11 @@ contract ESGICertificates is ERC721URIStorage {
     }
 
     /**
-     * @dev N'importe qui peut mettre à jour la tokenURI d'un NFT.
+     * @dev Mettre à jour la tokenURI d'un NFT.
      * @param tokenId l'ID du NFT
      * @param newURI Nouvelle URI (IPFS, etc.)
      */
     function updateTokenURI(uint256 tokenId, string memory newURI) external {
-        // Pas de restriction => tout le monde peut
         _setTokenURI(tokenId, newURI);
     }
 
