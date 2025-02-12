@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Minus } from "lucide-react"
 
+import { uploadJson } from "./creation"
+
 // Validation schemas
 const programSchema = z.object({
     studentId: z.string().min(1, "Student ID is required"),
@@ -93,7 +95,8 @@ export default function AdminPage() {
 
     const onProgramSubmit = (data: ProgramForm) => {
         console.log("Program Form Data:", data)
-        // Handle program creation here
+        const uploadToIPFS = uploadJson(data);
+        console.log(uploadToIPFS);
     }
 
     const onPerformanceSubmit = (data: PerformanceForm) => {

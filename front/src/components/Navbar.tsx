@@ -12,7 +12,10 @@ const Navbar = () => {
                     <span>C3rtif</span>
                 </Link>
                 <nav className="flex gap-4 sm:gap-6 items-center">
-                    <Link href="#features" className="text-sm font-medium hover:underline underline-offset-4">
+                    <Link href="/" className="text-sm font-medium hover:underline underline-offset-4">
+                        Home
+                    </Link>
+                    <Link href="/explorer" className="text-sm font-medium hover:underline underline-offset-4">
                         Explorer
                     </Link>
                     <Link href="/admin" className="text-sm font-medium hover:underline underline-offset-4">
