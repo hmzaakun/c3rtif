@@ -103,6 +103,11 @@ export const abi = [
                     "name": "",
                     "type": "uint256[]",
                     "internalType": "uint256[]"
+                },
+                {
+                    "name": "",
+                    "type": "string[]",
+                    "internalType": "string[]"
                 }
             ],
             "stateMutability": "view"
@@ -116,6 +121,11 @@ export const abi = [
                     "name": "",
                     "type": "uint256[]",
                     "internalType": "uint256[]"
+                },
+                {
+                    "name": "",
+                    "type": "string[]",
+                    "internalType": "string[]"
                 }
             ],
             "stateMutability": "view"
@@ -627,4 +637,4 @@ export const abi = [
                 }
             ]
         }
-    ]
+    ];

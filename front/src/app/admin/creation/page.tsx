@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Minus } from "lucide-react"
 
-import { uploadJson } from "./creation"
+import { useCreateProgram, useCreatePerformance } from "../ChainWrite"
 
 // Validation schemas
 const programSchema = z.object({
@@ -53,6 +53,9 @@ type ProgramForm = z.infer<typeof programSchema>
 type PerformanceForm = z.infer<typeof performanceSchema>
 
 export default function AdminPage() {
+    const { createProgram } = useCreateProgram();
+    const { createPerformance } = useCreatePerformance();
+
     const [activeForm, setActiveForm] = useState<"program" | "performance">("program")
 
     // Program Form
@@ -95,13 +98,14 @@ export default function AdminPage() {
 
     const onProgramSubmit = (data: ProgramForm) => {
         console.log("Program Form Data:", data)
-        const uploadToIPFS = uploadJson(data);
-        console.log(uploadToIPFS);
+        const creationProgram = createProgram(data);
+        console.log(JSON.stringify(creationProgram));
     }
 
     const onPerformanceSubmit = (data: PerformanceForm) => {
         console.log("Performance Form Data:", data)
-        // Handle performance creation here
+        const creationPerformance = createPerformance(data.parentTokenId, data);
+        console.log(JSON.stringify(creationPerformance));
     }
 
     return (

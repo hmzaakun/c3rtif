@@ -108,15 +108,31 @@ contract ESGICertificates is ERC721URIStorage {
     /**
      * @dev Liste de tous les IDs "Programme" (parent = 0).
      */
-    function getAllProgram() external view returns (uint256[] memory) {
-        return _programTokens;
+    function getAllProgram()
+        external
+        view
+        returns (uint256[] memory, string[] memory)
+    {
+        string[] memory programURI = new string[](_programTokens.length);
+        for (uint256 i = 0; i < _programTokens.length; i++) {
+            programURI[i] = tokenURI(_programTokens[i]);
+        }
+        return (_programTokens, programURI);
     }
 
     /**
      * @dev Liste de tous les IDs "Annuel" (parent != 0).
      */
-    function getAllAnnual() external view returns (uint256[] memory) {
-        return _annualTokens;
+    function getAllAnnual()
+        external
+        view
+        returns (uint256[] memory, string[] memory)
+    {
+        string[] memory annualURI = new string[](_annualTokens.length);
+        for (uint256 i = 0; i < _annualTokens.length; i++) {
+            annualURI[i] = tokenURI(_annualTokens[i]);
+        }
+        return (_annualTokens, annualURI);
     }
 
     /**
