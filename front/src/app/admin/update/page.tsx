@@ -16,6 +16,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { useUpdateAll } from "../ChainWrite"
 
+import RoleWrapper from "@/app/admin/RoleWrapper"
+
 // Validation schemas
 const programSchema = z.object({
     id: z.string().min(1, "Program ID is required"),
@@ -113,506 +115,508 @@ export default function UpdatePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/50 dark:from-slate-950 dark:to-slate-900">
-            <div className="max-w-4xl mx-auto p-8 space-y-8">
-                <div className="space-y-2">
-                    <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3 text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
-                        <PencilLine className="h-10 w-10 text-primary" />
-                        Update Records
-                        <Sparkles className="h-6 w-6 text-primary/60 animate-pulse" />
-                    </h1>
-                    <p className="text-muted-foreground text-lg">
-                        Update existing program or performance records by entering their ID and new information.
-                    </p>
-                </div>
+        <RoleWrapper>
+            <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100/50 dark:from-slate-950 dark:to-slate-900">
+                <div className="max-w-4xl mx-auto p-8 space-y-8">
+                    <div className="space-y-2">
+                        <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3 text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
+                            <PencilLine className="h-10 w-10 text-primary" />
+                            Update Records
+                            <Sparkles className="h-6 w-6 text-primary/60 animate-pulse" />
+                        </h1>
+                        <p className="text-muted-foreground text-lg">
+                            Update existing program or performance records by entering their ID and new information.
+                        </p>
+                    </div>
 
-                <Alert className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200/50 dark:from-yellow-950 dark:to-orange-950 dark:border-yellow-800/50">
-                    <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-                    <AlertTitle className="text-yellow-800 dark:text-yellow-300">Important</AlertTitle>
-                    <AlertDescription className="text-yellow-700 dark:text-yellow-400">
-                        Make sure to verify the ID before updating. All fields must be filled even if they remain unchanged.
-                    </AlertDescription>
-                </Alert>
+                    <Alert className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200/50 dark:from-yellow-950 dark:to-orange-950 dark:border-yellow-800/50">
+                        <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                        <AlertTitle className="text-yellow-800 dark:text-yellow-300">Important</AlertTitle>
+                        <AlertDescription className="text-yellow-700 dark:text-yellow-400">
+                            Make sure to verify the ID before updating. All fields must be filled even if they remain unchanged.
+                        </AlertDescription>
+                    </Alert>
 
-                <div className="rounded-lg backdrop-blur-sm bg-white/30 dark:bg-slate-950/30 p-1">
-                    <Tabs
-                        value={activeForm}
-                        onValueChange={(value) => setActiveForm(value as "program" | "performance")}
-                        className="w-full"
-                    >
-                        <TabsList className="grid w-full grid-cols-2 mb-4">
-                            <TabsTrigger
-                                value="program"
-                                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                            >
-                                Update Program
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="performance"
-                                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                            >
-                                Update Performance
-                            </TabsTrigger>
-                        </TabsList>
+                    <div className="rounded-lg backdrop-blur-sm bg-white/30 dark:bg-slate-950/30 p-1">
+                        <Tabs
+                            value={activeForm}
+                            onValueChange={(value) => setActiveForm(value as "program" | "performance")}
+                            className="w-full"
+                        >
+                            <TabsList className="grid w-full grid-cols-2 mb-4">
+                                <TabsTrigger
+                                    value="program"
+                                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                                >
+                                    Update Program
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="performance"
+                                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                                >
+                                    Update Performance
+                                </TabsTrigger>
+                            </TabsList>
 
-                        <TabsContent value="program">
-                            <Card className="border-0 shadow-lg shadow-primary/5 bg-white/70 dark:bg-slate-950/70 backdrop-blur-sm">
-                                <CardHeader className="border-b border-primary/5">
-                                    <CardTitle className="text-2xl">Update Program</CardTitle>
-                                    <CardDescription>Modify an existing program's information.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="pt-6">
-                                    <Form {...programForm}>
-                                        <form onSubmit={programForm.handleSubmit(onProgramSubmit)} className="space-y-6">
-                                            <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="id"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="text-base">Program ID to Update</FormLabel>
-                                                            <FormControl>
-                                                                <Input
-                                                                    {...field}
-                                                                    className="border-primary/20 bg-white dark:bg-slate-950"
-                                                                    placeholder="Enter the program ID"
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <div className="space-y-6 border-t border-primary/10 pt-6">
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="studentId"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Student ID</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="programName"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Program Name</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="yearRange"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Year Range</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="programStatus"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Program Status</FormLabel>
-                                                            <FormControl>
-                                                                <Select
-                                                                    onValueChange={field.onChange}
-                                                                    value={field.value}
-                                                                >
-                                                                    <SelectTrigger className="border-primary/20 bg-white/70 dark:bg-slate-950/70">
-                                                                        <SelectValue placeholder="Select status" />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent>
-                                                                        <SelectItem value="ACTIVE">Active</SelectItem>
-                                                                        <SelectItem value="COMPLETED">Completed</SelectItem>
-                                                                        <SelectItem value="SUSPENDED">Suspended</SelectItem>
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="certificateIssuedDate"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Certificate Issued Date</FormLabel>
-                                                            <FormControl>
-                                                                <Input
-                                                                    type="date"
-                                                                    {...field}
-                                                                    className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="comments"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Comments</FormLabel>
-                                                            <FormControl>
-                                                                <Textarea {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="issuer"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Issuer</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={programForm.control}
-                                                    name="signer"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Signer</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <Button
-                                                type="submit"
-                                                className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-                                            >
-                                                Update Program
-                                            </Button>
-                                        </form>
-                                    </Form>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
+                            <TabsContent value="program">
+                                <Card className="border-0 shadow-lg shadow-primary/5 bg-white/70 dark:bg-slate-950/70 backdrop-blur-sm">
+                                    <CardHeader className="border-b border-primary/5">
+                                        <CardTitle className="text-2xl">Update Program</CardTitle>
+                                        <CardDescription>Modify an existing program's information.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="pt-6">
+                                        <Form {...programForm}>
+                                            <form onSubmit={programForm.handleSubmit(onProgramSubmit)} className="space-y-6">
+                                                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="id"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="text-base">Program ID to Update</FormLabel>
+                                                                <FormControl>
+                                                                    <Input
+                                                                        {...field}
+                                                                        className="border-primary/20 bg-white dark:bg-slate-950"
+                                                                        placeholder="Enter the program ID"
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="space-y-6 border-t border-primary/10 pt-6">
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="studentId"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Student ID</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="programName"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Program Name</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="yearRange"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Year Range</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="programStatus"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Program Status</FormLabel>
+                                                                <FormControl>
+                                                                    <Select
+                                                                        onValueChange={field.onChange}
+                                                                        value={field.value}
+                                                                    >
+                                                                        <SelectTrigger className="border-primary/20 bg-white/70 dark:bg-slate-950/70">
+                                                                            <SelectValue placeholder="Select status" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="ACTIVE">Active</SelectItem>
+                                                                            <SelectItem value="COMPLETED">Completed</SelectItem>
+                                                                            <SelectItem value="SUSPENDED">Suspended</SelectItem>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="certificateIssuedDate"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Certificate Issued Date</FormLabel>
+                                                                <FormControl>
+                                                                    <Input
+                                                                        type="date"
+                                                                        {...field}
+                                                                        className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="comments"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Comments</FormLabel>
+                                                                <FormControl>
+                                                                    <Textarea {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="issuer"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Issuer</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={programForm.control}
+                                                        name="signer"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Signer</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <Button
+                                                    type="submit"
+                                                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                                                >
+                                                    Update Program
+                                                </Button>
+                                            </form>
+                                        </Form>
+                                    </CardContent>
+                                </Card>
+                            </TabsContent>
 
-                        <TabsContent value="performance">
-                            <Card className="border-0 shadow-lg shadow-primary/5 bg-white/70 dark:bg-slate-950/70 backdrop-blur-sm">
-                                <CardHeader className="border-b border-primary/5">
-                                    <CardTitle className="text-2xl">Update Performance Record</CardTitle>
-                                    <CardDescription>Modify an existing performance record.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="pt-6">
-                                    <Form {...performanceForm}>
-                                        <form onSubmit={performanceForm.handleSubmit(onPerformanceSubmit)} className="space-y-6">
-                                            <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="id"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="text-base">Performance ID to Update</FormLabel>
-                                                            <FormControl>
-                                                                <Input
-                                                                    {...field}
-                                                                    className="border-primary/20 bg-white dark:bg-slate-950"
-                                                                    placeholder="Enter the performance ID"
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <div className="space-y-6 border-t border-primary/10 pt-6">
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="parentTokenId"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Program ID</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="studentId"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Student ID</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="studentName"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Student Name</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="year"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Year</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                            <TabsContent value="performance">
+                                <Card className="border-0 shadow-lg shadow-primary/5 bg-white/70 dark:bg-slate-950/70 backdrop-blur-sm">
+                                    <CardHeader className="border-b border-primary/5">
+                                        <CardTitle className="text-2xl">Update Performance Record</CardTitle>
+                                        <CardDescription>Modify an existing performance record.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="pt-6">
+                                        <Form {...performanceForm}>
+                                            <form onSubmit={performanceForm.handleSubmit(onPerformanceSubmit)} className="space-y-6">
+                                                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="id"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="text-base">Performance ID to Update</FormLabel>
+                                                                <FormControl>
+                                                                    <Input
+                                                                        {...field}
+                                                                        className="border-primary/20 bg-white dark:bg-slate-950"
+                                                                        placeholder="Enter the performance ID"
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="space-y-6 border-t border-primary/10 pt-6">
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="parentTokenId"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Program ID</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="studentId"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Student ID</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="studentName"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Student Name</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="year"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Year</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
 
-                                                <div className="space-y-4">
-                                                    <div className="flex items-center justify-between">
-                                                        <FormLabel>Courses</FormLabel>
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => append({ name: "", grade: "", result: "", comments: "" })}
-                                                            className="border-primary/20 hover:bg-primary/10"
-                                                        >
-                                                            <Plus className="h-4 w-4" />
-                                                            Add Course
-                                                        </Button>
-                                                    </div>
-                                                    {fields.map((field, index) => (
-                                                        <div
-                                                            key={field.id}
-                                                            className="p-4 rounded-lg border border-primary/10 bg-white/50 dark:bg-slate-950/50 space-y-4"
-                                                        >
-                                                            <div className="flex justify-end">
-                                                                {index > 0 && (
-                                                                    <Button type="button" variant="ghost" size="sm" onClick={() => remove(index)}>
-                                                                        <Minus className="h-4 w-4" />
-                                                                    </Button>
-                                                                )}
-                                                            </div>
-                                                            <FormField
-                                                                control={performanceForm.control}
-                                                                name={`courses.${index}.name`}
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>Course Name</FormLabel>
-                                                                        <FormControl>
-                                                                            <Input
-                                                                                {...field}
-                                                                                className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={performanceForm.control}
-                                                                name={`courses.${index}.grade`}
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>Grade</FormLabel>
-                                                                        <FormControl>
-                                                                            <Input
-                                                                                {...field}
-                                                                                className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={performanceForm.control}
-                                                                name={`courses.${index}.result`}
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>Result</FormLabel>
-                                                                        <FormControl>
-                                                                            <Input
-                                                                                {...field}
-                                                                                className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={performanceForm.control}
-                                                                name={`courses.${index}.comments`}
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>Comments</FormLabel>
-                                                                        <FormControl>
-                                                                            <Textarea
-                                                                                {...field}
-                                                                                className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
+                                                    <div className="space-y-4">
+                                                        <div className="flex items-center justify-between">
+                                                            <FormLabel>Courses</FormLabel>
+                                                            <Button
+                                                                type="button"
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => append({ name: "", grade: "", result: "", comments: "" })}
+                                                                className="border-primary/20 hover:bg-primary/10"
+                                                            >
+                                                                <Plus className="h-4 w-4" />
+                                                                Add Course
+                                                            </Button>
                                                         </div>
-                                                    ))}
-                                                </div>
+                                                        {fields.map((field, index) => (
+                                                            <div
+                                                                key={field.id}
+                                                                className="p-4 rounded-lg border border-primary/10 bg-white/50 dark:bg-slate-950/50 space-y-4"
+                                                            >
+                                                                <div className="flex justify-end">
+                                                                    {index > 0 && (
+                                                                        <Button type="button" variant="ghost" size="sm" onClick={() => remove(index)}>
+                                                                            <Minus className="h-4 w-4" />
+                                                                        </Button>
+                                                                    )}
+                                                                </div>
+                                                                <FormField
+                                                                    control={performanceForm.control}
+                                                                    name={`courses.${index}.name`}
+                                                                    render={({ field }) => (
+                                                                        <FormItem>
+                                                                            <FormLabel>Course Name</FormLabel>
+                                                                            <FormControl>
+                                                                                <Input
+                                                                                    {...field}
+                                                                                    className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                                />
+                                                                            </FormControl>
+                                                                            <FormMessage />
+                                                                        </FormItem>
+                                                                    )}
+                                                                />
+                                                                <FormField
+                                                                    control={performanceForm.control}
+                                                                    name={`courses.${index}.grade`}
+                                                                    render={({ field }) => (
+                                                                        <FormItem>
+                                                                            <FormLabel>Grade</FormLabel>
+                                                                            <FormControl>
+                                                                                <Input
+                                                                                    {...field}
+                                                                                    className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                                />
+                                                                            </FormControl>
+                                                                            <FormMessage />
+                                                                        </FormItem>
+                                                                    )}
+                                                                />
+                                                                <FormField
+                                                                    control={performanceForm.control}
+                                                                    name={`courses.${index}.result`}
+                                                                    render={({ field }) => (
+                                                                        <FormItem>
+                                                                            <FormLabel>Result</FormLabel>
+                                                                            <FormControl>
+                                                                                <Input
+                                                                                    {...field}
+                                                                                    className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                                />
+                                                                            </FormControl>
+                                                                            <FormMessage />
+                                                                        </FormItem>
+                                                                    )}
+                                                                />
+                                                                <FormField
+                                                                    control={performanceForm.control}
+                                                                    name={`courses.${index}.comments`}
+                                                                    render={({ field }) => (
+                                                                        <FormItem>
+                                                                            <FormLabel>Comments</FormLabel>
+                                                                            <FormControl>
+                                                                                <Textarea
+                                                                                    {...field}
+                                                                                    className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                                />
+                                                                            </FormControl>
+                                                                            <FormMessage />
+                                                                        </FormItem>
+                                                                    )}
+                                                                />
+                                                            </div>
+                                                        ))}
+                                                    </div>
 
-                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <FormField
+                                                            control={performanceForm.control}
+                                                            name="yearStartDate"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Start Date</FormLabel>
+                                                                    <FormControl>
+                                                                        <Input
+                                                                            type="date"
+                                                                            {...field}
+                                                                            className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                        />
+                                                                    </FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={performanceForm.control}
+                                                            name="yearEndDate"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>End Date</FormLabel>
+                                                                    <FormControl>
+                                                                        <Input
+                                                                            type="date"
+                                                                            {...field}
+                                                                            className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
+                                                                        />
+                                                                    </FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
+
                                                     <FormField
                                                         control={performanceForm.control}
-                                                        name="yearStartDate"
+                                                        name="academicStatus"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Start Date</FormLabel>
+                                                                <FormLabel>Academic Status</FormLabel>
                                                                 <FormControl>
-                                                                    <Input
-                                                                        type="date"
-                                                                        {...field}
-                                                                        className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                    />
+                                                                    <Select
+                                                                        onValueChange={field.onChange}
+                                                                        value={field.value}
+                                                                    >
+                                                                        <SelectTrigger className="border-primary/20 bg-white/70 dark:bg-slate-950/70">
+                                                                            <SelectValue placeholder="Select status" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="SUCCESS">Success</SelectItem>
+                                                                            <SelectItem value="FAILED">Failed</SelectItem>
+                                                                            <SelectItem value="REVOKED">Revoked</SelectItem>
+                                                                        </SelectContent>
+                                                                    </Select>
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
                                                     />
+
                                                     <FormField
                                                         control={performanceForm.control}
-                                                        name="yearEndDate"
+                                                        name="academicComments"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>End Date</FormLabel>
+                                                                <FormLabel>Academic Comments</FormLabel>
                                                                 <FormControl>
-                                                                    <Input
-                                                                        type="date"
-                                                                        {...field}
-                                                                        className="border-primary/20 bg-white/70 dark:bg-slate-950/70"
-                                                                    />
+                                                                    <Textarea {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="issuer"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Issuer</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+
+                                                    <FormField
+                                                        control={performanceForm.control}
+                                                        name="signer"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Signer</FormLabel>
+                                                                <FormControl>
+                                                                    <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
                                                     />
                                                 </div>
-
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="academicStatus"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Academic Status</FormLabel>
-                                                            <FormControl>
-                                                                <Select
-                                                                    onValueChange={field.onChange}
-                                                                    value={field.value}
-                                                                >
-                                                                    <SelectTrigger className="border-primary/20 bg-white/70 dark:bg-slate-950/70">
-                                                                        <SelectValue placeholder="Select status" />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent>
-                                                                        <SelectItem value="SUCCESS">Success</SelectItem>
-                                                                        <SelectItem value="FAILED">Failed</SelectItem>
-                                                                        <SelectItem value="REVOKED">Revoked</SelectItem>
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="academicComments"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Academic Comments</FormLabel>
-                                                            <FormControl>
-                                                                <Textarea {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="issuer"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Issuer</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <FormField
-                                                    control={performanceForm.control}
-                                                    name="signer"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Signer</FormLabel>
-                                                            <FormControl>
-                                                                <Input {...field} className="border-primary/20 bg-white/70 dark:bg-slate-950/70" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <Button
-                                                type="submit"
-                                                className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-                                            >
-                                                Update Performance Record
-                                            </Button>
-                                        </form>
-                                    </Form>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
-                    </Tabs>
+                                                <Button
+                                                    type="submit"
+                                                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                                                >
+                                                    Update Performance Record
+                                                </Button>
+                                            </form>
+                                        </Form>
+                                    </CardContent>
+                                </Card>
+                            </TabsContent>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
-        </div>
+        </RoleWrapper>
     )
 }
 
